@@ -1,6 +1,7 @@
 package com.barri.myjisho.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.barri.myjisho.R;
+import com.barri.myjisho.views.ChapterView;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -36,6 +38,9 @@ public class MangaAdapter extends BaseAdapter{
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, String.valueOf(position), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, ChapterView.class);
+                    intent.putExtra("pos",position);
+                    context.startActivity(intent);
                 }
             });
             iv.setOnLongClickListener(new View.OnLongClickListener() {

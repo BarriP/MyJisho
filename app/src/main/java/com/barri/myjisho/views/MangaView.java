@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.barri.myjisho.R;
+import com.barri.myjisho.adapter.MangaAdapter;
 
 public class MangaView extends AppCompatActivity {
 
@@ -40,13 +41,9 @@ public class MangaView extends AppCompatActivity {
             }
         });
 
-        //Grid View
-        gridView = (GridView) findViewById(R.id.gridView);
+        gridView = (GridView) findViewById(R.id.mangaGrid);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, numbers);
-
-        gridView.setAdapter(adapter);
+        gridView.setAdapter(new MangaAdapter(this));
     }
 
     @Override

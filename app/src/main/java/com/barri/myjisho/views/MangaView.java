@@ -1,29 +1,28 @@
 package com.barri.myjisho.views;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.barri.myjisho.R;
 import com.barri.myjisho.adapter.MangaAdapter;
+import com.barri.myjisho.model.Coleccion;
+
 
 public class MangaView extends AppCompatActivity {
 
     GridView gridView;
-
-    static final String[] numbers = new String[] {
-            "A", "B", "C", "D", "E",
-            "F", "G", "H", "I", "J",
-            "K", "L", "M", "N", "O",
-            "P", "Q", "R", "S", "T",
-            "U", "V", "W", "X", "Y", "Z"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +35,37 @@ public class MangaView extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Añadir manga
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MangaView.this);
+                builder.setTitle("Añadir Manga");
+
+                View layout = getLayoutInflater().inflate(R.layout.manga_dialog,null);
+
+                final EditText mangaName = (EditText) layout.findViewById(R.id.editText);
+
+                builder.setView(layout);
+
+                builder.setCancelable(true);
+
+                builder.setPositiveButton("Añadir", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String manga = mangaName.getText().toString();
+                        if (manga.length() == 0)
+                            Toast.makeText(getApplicationContext(), "Necesitas poner un nombre", Toast.LENGTH_SHORT).show();
+                        else {
+                            new Coleccion(manga).save();
+                            Toast.makeText(getApplicationContext(), "Manga [" + manga + "] añadido", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar",null);
+
+                Dialog d = builder.create();
+                d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                d.show();
             }
         });
 

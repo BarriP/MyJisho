@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.barri.myjisho.R;
+import com.barri.myjisho.model.Coleccion;
 import com.barri.myjisho.views.ChapterView;
 import com.squareup.picasso.Picasso;
 
@@ -32,36 +33,36 @@ public class MangaAdapter extends BaseAdapter{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if(convertView == null) {
-            View view = inflater.inflate(R.layout.manga_cell, null);
-            ImageView iv = (ImageView) view.findViewById(R.id.picture);
-            iv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, ChapterView.class);
-                    intent.putExtra("pos",position);
-                    context.startActivity(intent);
-                }
-            });
-            iv.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Toast.makeText(context, "way too long", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
-            Picasso.with(context).load(R.drawable.manga).into(iv);
-            TextView tv = (TextView) view.findViewById(R.id.pictureText);
-            tv.setText(String.valueOf(position));
-            convertView = view;
+            convertView = inflater.inflate(R.layout.manga_cell, null);
         }
+
+        ImageView iv = (ImageView) convertView.findViewById(R.id.picture);
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, String.valueOf(position), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ChapterView.class);
+                intent.putExtra("pos",position);
+                context.startActivity(intent);
+            }
+        });
+        iv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context, "way too long", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        Picasso.with(context).load(R.drawable.manga).into(iv);
+        TextView tv = (TextView) convertView.findViewById(R.id.pictureText);
+        tv.setText(Coleccion.listAll(Coleccion.class).get(position).getName());
 
         return convertView;
     }
 
     @Override
     public int getCount() {
-        return 10;
+        return (int) Coleccion.count(Coleccion.class);
     }
 
     @Override
@@ -71,6 +72,6 @@ public class MangaAdapter extends BaseAdapter{
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 }

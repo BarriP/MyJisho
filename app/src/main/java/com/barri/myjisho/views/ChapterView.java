@@ -12,6 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.barri.myjisho.R;
+import com.barri.myjisho.model.Coleccion;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ChapterView extends AppCompatActivity {
 
@@ -26,7 +31,16 @@ public class ChapterView extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.chapterList);
 
-        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"Chapter1", "Chapter 2"}));
+        List<String> list = new ArrayList<>();
+
+        Iterator<Coleccion> iterator = Coleccion.findAll(Coleccion.class);
+        
+        while (iterator.hasNext()) {
+            Coleccion c = iterator.next();
+            list.add(c.getName());
+        }
+
+        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

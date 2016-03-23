@@ -36,13 +36,16 @@ public class MangaAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.manga_cell, null);
         }
 
+        TextView tv = (TextView) convertView.findViewById(R.id.pictureText);
+        final Coleccion c = Coleccion.listAll(Coleccion.class).get(position);
+        tv.setText(c.getName());
+
         ImageView iv = (ImageView) convertView.findViewById(R.id.picture);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, String.valueOf(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ChapterView.class);
-                intent.putExtra("pos",position);
+                intent.putExtra("coleccion", c.getId());
                 context.startActivity(intent);
             }
         });
@@ -54,8 +57,6 @@ public class MangaAdapter extends BaseAdapter{
             }
         });
         Picasso.with(context).load(R.drawable.manga).into(iv);
-        TextView tv = (TextView) convertView.findViewById(R.id.pictureText);
-        tv.setText(Coleccion.listAll(Coleccion.class).get(position).getName());
 
         return convertView;
     }

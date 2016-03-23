@@ -2,6 +2,8 @@ package com.barri.myjisho.model;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
+
 /**
  * Created by Barri on 23/03/2016.
  */
@@ -22,4 +24,7 @@ public class Capitulo extends SugarRecord{
     }
 
     /* Domain */
+    public String getName() {
+        return name;
+    }
 }

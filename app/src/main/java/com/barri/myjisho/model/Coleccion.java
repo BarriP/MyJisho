@@ -2,6 +2,7 @@ package com.barri.myjisho.model;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public class Coleccion extends SugarRecord{
     private String name;
 
     /* Relationships */
-    List<Capitulo> getCapitulos(){
+    public List<Capitulo> getCapitulos(){
         return Capitulo.find(Capitulo.class,"colleccion = ?", String.valueOf(getId()));
     }
 

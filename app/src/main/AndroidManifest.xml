@@ -2,13 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.barri.myjisho" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="com.orm.SugarApp">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".views.MangaView"
             android:label="@string/app_name"
@@ -30,10 +34,24 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
 
-        <meta-data android:name="DATABASE" android:value="Traducciones.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.barri.myjisho.model" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="Traducciones.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.barri.myjisho.model" />
+
+        <activity
+            android:name=".views.JishoActivity"
+            android:label="@string/title_activity_jisho"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

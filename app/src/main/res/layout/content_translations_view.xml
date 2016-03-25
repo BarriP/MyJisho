@@ -10,7 +10,7 @@
     tools:showIn="@layout/activity_translations_view"
     tools:context="com.barri.myjisho.views.TranslationsView">
 
-    <ListView
+    <ExpandableListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"

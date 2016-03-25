@@ -15,7 +15,7 @@ public class Coleccion extends SugarRecord{
 
     /* Relationships */
     public List<Capitulo> getCapitulos(){
-        return Capitulo.find(Capitulo.class,"colleccion = ?", String.valueOf(getId()));
+        return Capitulo.find(Capitulo.class,"coleccion = ?", String.valueOf(getId()));
     }
 
     /* Constructors */

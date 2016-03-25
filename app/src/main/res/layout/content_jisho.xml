@@ -15,6 +15,16 @@
         android:id="@+id/searchView"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/pageBox"
+        android:iconifiedByDefault="false"/>
+
+    <EditText
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/pageBox"
+        android:layout_alignBottom="@+id/searchView"
         android:layout_alignParentEnd="true" />
 
     <ListView

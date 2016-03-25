@@ -3,6 +3,7 @@ package com.barri.myjisho.model;
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Barri on 23/03/2016.
@@ -13,14 +14,18 @@ public class Capitulo extends SugarRecord{
     private String name;
 
     /* Relationships */
-    private Coleccion colleccion;
+    private Coleccion coleccion;
+
+    public List<Traduccion> getTraducciones(){
+        return Traduccion.find(Traduccion.class,"capitulo = ?", String.valueOf(getId()));
+    }
 
     /* Constructors */
     public Capitulo() {} //Para el mapeador
 
-    public Capitulo(String name, Coleccion colleccion){
+    public Capitulo(String name, Coleccion coleccion){
         this.name = name;
-        this.colleccion = colleccion;
+        this.coleccion = coleccion;
     }
 
     /* Domain */

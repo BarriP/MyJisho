@@ -1,19 +1,27 @@
 package com.barri.myjisho.views;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.barri.myjisho.R;
 import com.barri.myjisho.adapter.TranslationAdapter;
+import com.barri.myjisho.model.Capitulo;
 import com.barri.myjisho.model.Traduccion;
 
 public class TranslationsView extends AppCompatActivity {
+
+    private long chapterID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +30,34 @@ public class TranslationsView extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        chapterID = getIntent().getLongExtra("chapterID", -1);
+
+        final Capitulo capitulo = Capitulo.findById(Capitulo.class,chapterID);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), JishoActivity.class);
+                intent.putExtra("chapterID",chapterID);
                 startActivity(intent);
             }
         });
 
-        ListView lv = (ListView) findViewById(R.id.listView);
+        ExpandableListView lv = (ExpandableListView) findViewById(R.id.listView);
 
-        lv.setAdapter(new TranslationAdapter(this));
+        TranslationAdapter adapter = new TranslationAdapter(this, capitulo);
 
+        lv.setAdapter(adapter);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        ExpandableListView lv = (ExpandableListView) findViewById(R.id.listView);
+
+        TranslationAdapter adapter = (TranslationAdapter) lv.getExpandableListAdapter();
+
+        adapter.notifyDataSetChanged();
+    }
 }

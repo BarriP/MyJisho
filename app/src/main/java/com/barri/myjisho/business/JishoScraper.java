@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.ListView;
 
 import com.barri.myjisho.adapter.JishoAdapter;
+import com.barri.myjisho.model.Capitulo;
 import com.barri.myjisho.model.Traduccion;
 import com.barri.myjisho.views.JishoActivity;
 
@@ -27,10 +28,13 @@ public class JishoScraper {
     private final ListView listView;
 
     private JishoActivity context;
+    private Capitulo capitulo;
+    private int pageNumber = 0;
 
-    public JishoScraper(ListView listView, JishoActivity context){
+    public JishoScraper(ListView listView, JishoActivity context, Capitulo capitulo){
         this.listView = listView;
         this.context = context;
+        this.capitulo = capitulo;
     }
 
     public void findResults(String query){
@@ -67,7 +71,7 @@ public class JishoScraper {
                         sb.append("\n");
                     }
 
-                    trads.add(new Traduccion(kanjiBlock.text() + " - " + readingBlock.text(),sb.toString(),0));
+                    trads.add(new Traduccion(kanjiBlock.text() + " - " + readingBlock.text(),sb.toString(),pageNumber,capitulo));
                 }
 
                 context.runOnUiThread(new Runnable() {
@@ -82,5 +86,9 @@ public class JishoScraper {
         thread.start();
 
         return;
+    }
+
+    public void setPage(int page){
+        this.pageNumber = page;
     }
 }

@@ -42,7 +42,7 @@ public class ChapterView extends AppCompatActivity {
 
         final Coleccion coleccion = Coleccion.findById(Coleccion.class,coleccionID);
 
-        List<Capitulo> list = coleccion.getCapitulos();
+        final List<Capitulo> list = coleccion.getCapitulos();
 
         List<String> chapters = new ArrayList<>();
         for (Capitulo c : list) {
@@ -55,6 +55,7 @@ public class ChapterView extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), TranslationsView.class);
+                intent.putExtra("chapterID",list.get(position).getId());
                 startActivity(intent);
             }
         });

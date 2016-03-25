@@ -14,14 +14,16 @@ public class Traduccion extends SugarRecord{
     private int page;
 
     /* Relationships */
+    private Capitulo capitulo;
 
     /* Constructors */
     public Traduccion() {} //Para el mapeador
 
-    public Traduccion(String name, String description, int page){
+    public Traduccion(String name, String description, int page, Capitulo capitulo){
         this.name = name;
         this.description = description;
         this.page = page;
+        this.capitulo = capitulo;
     }
 
     /* Domain */

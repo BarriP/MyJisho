@@ -1,8 +1,5 @@
 package com.barri.myjisho.persistence;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageItemInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -13,14 +10,12 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.UploadErrorException;
-import com.dropbox.core.v2.users.FullAccount;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by Barri on 24/03/2016.
@@ -29,11 +24,13 @@ public class Backup {
 
     private MangaView context;
     private final String inFileName = "/data/data/com.barri.myjisho/databases/";
+    private String databaseName;
+    private String access;
 
     public Backup(MangaView context) {
 
         //Not gonna publish this on github lol
-        String accessToken = context.getResources().getString(R.string.access_token);
+        access = context.getResources().getString(R.string.access_token);
 
         this.context = context;
 
@@ -44,18 +41,18 @@ public class Backup {
             e.printStackTrace();
             return;
         }
-        String database = bundle.getString("DATABASE");
-
-        connect(accessToken, database);
+        databaseName = bundle.getString("DATABASE");
     }
 
-    private void connect(final String accessToken, final String database) {
-        Toast.makeText(context,"Inicio Backup",Toast.LENGTH_SHORT).show();
+    public void backup() {
+        Toast.makeText(context, "Inicio Backup", Toast.LENGTH_SHORT).show();
+
+        final String accessToken = access;
+        final String database = databaseName;
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-
                 try {
 
                     DbxRequestConfig config = new DbxRequestConfig(
@@ -94,5 +91,46 @@ public class Backup {
         thread.start();
     }
 
+    public void restore() {
+        Toast.makeText(context, "Inicio Restauracion", Toast.LENGTH_SHORT).show();
 
+        final String accessToken = access;
+        final String database = databaseName;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    DbxRequestConfig config = new DbxRequestConfig(
+                            "dropbox/Aplicaciones/MyJisho", "es_ES");
+                    DbxClientV2 client = new DbxClientV2(config, accessToken);
+
+                    try (OutputStream out = new FileOutputStream(inFileName + database)) {
+                        client.files().download("/" + database).download(out);
+                    } catch (IOException e) {
+                        Toast.makeText(context, "Fallo al descargar fichero", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (DbxException e) {
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "Fallo al conectarse", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "420 Blaze it", Toast.LENGTH_SHORT).show();
+                        context.refresh();
+                    }
+                });
+            }
+        });
+
+        thread.start();
+    }
 }

@@ -90,10 +90,23 @@ public class MangaView extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Backup backup = new Backup(this);
+        if (id == R.id.action_backup) {
+            new Backup(this).backup();
+        } else if(id == R.id.action_restore) {
+            new Backup(this).restore();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        MangaAdapter adapter = (MangaAdapter) gridView.getAdapter();
+        adapter.notifyDataSetChanged();
+    }
+
+    public void refresh(){
+        onRestart();
     }
 }

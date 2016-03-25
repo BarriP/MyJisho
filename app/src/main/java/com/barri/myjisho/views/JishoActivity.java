@@ -29,7 +29,7 @@ public class JishoActivity extends AppCompatActivity {
 
         Capitulo capitulo = Capitulo.findById(Capitulo.class,chapterID);
 
-        SearchView search = (SearchView) findViewById(R.id.searchView);
+        final SearchView search = (SearchView) findViewById(R.id.searchView);
         final ListView listView = (ListView) findViewById(R.id.tempList);
         final EditText pageText = (EditText) findViewById(R.id.pageBox);
 
@@ -40,6 +40,7 @@ public class JishoActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 scraper.setPage(Integer.parseInt(pageText.getText().toString()));
                 scraper.findResults(query);
+                search.clearFocus();
                 return true;
             }
 

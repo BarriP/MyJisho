@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.barri.myjisho.R;
 import com.barri.myjisho.adapter.MangaAdapter;
 import com.barri.myjisho.model.Coleccion;
+import com.barri.myjisho.persistence.Backup;
 
 
 public class MangaView extends AppCompatActivity {
@@ -90,7 +91,7 @@ public class MangaView extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Backup backup = new Backup(this);
         }
 
         return super.onOptionsItemSelected(item);

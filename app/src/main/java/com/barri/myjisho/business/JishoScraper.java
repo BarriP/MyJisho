@@ -15,7 +15,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class JishoScraper {
         this.capitulo = capitulo;
     }
 
-    public void findResults(String query){
+    public void findResults(final String query){
 
         final String mQuery = query;
 
@@ -48,7 +50,9 @@ public class JishoScraper {
                 final List<Traduccion> trads = new ArrayList<>();
 
                 try {
-                    page = Jsoup.parse(new URL(BASE_URL + mQuery).openStream(), "UTF-8", BASE_URL + mQuery);
+                    String queryString = URLEncoder.encode(mQuery,"UTF8");
+                    String url = BASE_URL + queryString;
+                    page = Jsoup.connect(url).get();
                 } catch (IOException e) {
                     e.printStackTrace();
                     return;
@@ -65,13 +69,14 @@ public class JishoScraper {
                     Element readingBlock = elem.getElementsByClass("match").get(0);
 
                     Elements meanings = elem.getElementsByClass("meanings_column");
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     for (Element meaning : meanings) {
                         sb.append(meaning.text());
                         sb.append("\n");
                     }
 
-                    trads.add(new Traduccion(kanjiBlock.text() + " - " + readingBlock.text(),sb.toString(),pageNumber,capitulo));
+                    trads.add(new Traduccion(kanjiBlock.text() + " - " + readingBlock.text()
+                            ,sb.toString(),pageNumber,capitulo));
                 }
 
                 context.runOnUiThread(new Runnable() {

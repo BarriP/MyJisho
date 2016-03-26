@@ -10,6 +10,7 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.WriteMode;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -61,8 +62,9 @@ public class Backup {
 
                     try (InputStream in = new FileInputStream(inFileName + database)) {
                         FileMetadata metadata = client.files().uploadBuilder("/" + database)
-                                .uploadAndFinish(in);
+                                .withMode(WriteMode.OVERWRITE).uploadAndFinish(in);
                     } catch (IOException e) {
+                        int a = 3;
                         context.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

@@ -117,6 +117,8 @@ public class TranslationAdapter extends BaseExpandableListAdapter {
     }
 
     public void loadData() {
+        pages.clear();
+        childs.clear();
         List<Traduccion> traducciones = capitulo.getTraducciones();
         for (Traduccion t : traducciones) {
 

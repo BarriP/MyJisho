@@ -1,6 +1,7 @@
 package com.barri.myjisho.views;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -33,6 +34,10 @@ public class JishoActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.tempList);
         final EditText pageText = (EditText) findViewById(R.id.pageBox);
 
+        int lastPage = PreferenceManager.getDefaultSharedPreferences(this).getInt("lastPage",0);
+
+        pageText.setText(String.valueOf(lastPage));
+
         final JishoScraper scraper = new JishoScraper(listView,this,capitulo);
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -55,6 +60,8 @@ public class JishoActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Traduccion t = (Traduccion) parent.getItemAtPosition(position);
                 t.save();
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                        .edit().putInt("lastPage",t.getPage()).apply();
                 JishoActivity.this.finish();
             }
         });

@@ -36,7 +36,7 @@ public class MangaView extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Añadir manga
+                //Añadir manga1
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MangaView.this);
                 builder.setTitle("Añadir Manga");

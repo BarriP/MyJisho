@@ -1,5 +1,6 @@
 package com.barri.myjisho.views;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +35,8 @@ public class JishoActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.tempList);
         final EditText pageText = (EditText) findViewById(R.id.pageBox);
 
-        int lastPage = PreferenceManager.getDefaultSharedPreferences(this).getInt("lastPage",0);
+        int lastPage = this.getSharedPreferences(getString(R.string.shared_preferences_file),
+                Context.MODE_PRIVATE).getInt("lastPage" + chapterID, 1);
 
         pageText.setText(String.valueOf(lastPage));
 
@@ -60,8 +62,8 @@ public class JishoActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Traduccion t = (Traduccion) parent.getItemAtPosition(position);
                 t.save();
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                        .edit().putInt("lastPage",t.getPage()).apply();
+                getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_file),
+                        Context.MODE_PRIVATE).edit().putInt("lastPage" + chapterID,t.getPage()).apply();
                 JishoActivity.this.finish();
             }
         });

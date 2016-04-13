@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Adapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -23,6 +24,7 @@ import com.barri.myjisho.model.Traduccion;
 public class TranslationsView extends AppCompatActivity {
 
     private long chapterID;
+    private int lastExpandedPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class TranslationsView extends AppCompatActivity {
         setContentView(R.layout.activity_translations_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         chapterID = getIntent().getLongExtra("chapterID", -1);
 
@@ -45,9 +49,20 @@ public class TranslationsView extends AppCompatActivity {
             }
         });
 
-        ExpandableListView lv = (ExpandableListView) findViewById(R.id.listView);
+        final ExpandableListView lv = (ExpandableListView) findViewById(R.id.listView);
 
         TranslationAdapter adapter = new TranslationAdapter(this, capitulo);
+
+        lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    lv.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
 
         lv.setAdapter(adapter);
 

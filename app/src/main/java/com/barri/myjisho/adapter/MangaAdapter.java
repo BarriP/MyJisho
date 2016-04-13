@@ -2,6 +2,7 @@ package com.barri.myjisho.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.barri.myjisho.R;
 import com.barri.myjisho.model.Coleccion;
 import com.barri.myjisho.views.ChapterView;
 import com.squareup.picasso.Picasso;
+
+import java.lang.reflect.Field;
 
 /**
  * Implementacion Placeholder para pruebas
@@ -56,7 +59,7 @@ public class MangaAdapter extends BaseAdapter{
                 return true;
             }
         });
-        Picasso.with(context).load(R.drawable.manga).into(iv);
+        Picasso.with(context).load(getImage(c)).into(iv);
 
         return convertView;
     }
@@ -74,5 +77,22 @@ public class MangaAdapter extends BaseAdapter{
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    private int getImage(Coleccion c){
+        long coleccionID = c.getId();
+
+        int drawableID;
+        try {
+            Class res = R.drawable.class;
+            Field field = res.getField("manga" + coleccionID);
+            drawableID = field.getInt(null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            drawableID = R.drawable.manga0;
+        }
+
+        return drawableID;
     }
 }
